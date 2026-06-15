@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Naren — GT Lab RL Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080D1A; --bg2: #0F1628; --card: #131D30; --card2: #1A2640;
+    --border: #1E3050; --cyan: #00D4FF; --cyan-dim: rgba(0,212,255,0.12);
+    --amber: #FFB347; --amber-dim: rgba(255,179,71,0.12);
+    --green: #39FF9B; --green-dim: rgba(57,255,155,0.12);
+    --red: #FF4D6A; --purple: #C084FC; --purple-dim: rgba(192,132,252,0.12);
+    --text: #E8EDF5; --text-dim: #7A8BA8; --text-dimmer: #3D5070;
+    --mono: 'JetBrains Mono', monospace; --sans: 'Space Grotesk', sans-serif; --body: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); min-height: 100vh; overflow-x: hidden; }
+
+  header { padding: 40px 48px 0; max-width: 960px; margin: 0 auto; }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--cyan); text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-family: var(--sans); font-size: clamp(26px, 4vw, 40px); font-weight: 700; line-height: 1.1; margin-bottom: 6px; }
+  h1 span { color: var(--cyan); }
+  .subtitle { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.6; }
+
+  .lab-selector { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+  .lab-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; padding: 8px 16px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text-dim); transition: all 0.2s; text-transform: uppercase; }
+  .lab-btn:hover { border-color: var(--cyan); color: var(--text); }
+  .lab-btn.active-zhao { background: rgba(57,255,155,0.12); border-color: var(--green); color: var(--green); }
+  .lab-btn.active-ravi { background: rgba(0,212,255,0.12); border-color: var(--cyan); color: var(--cyan); }
+  .lab-btn.active-gom { background: rgba(192,132,252,0.12); border-color: var(--purple); color: var(--purple); }
+
+  .mission-bar { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 40px; display: flex; align-items: center; gap: 20px; }
+  .mission-label { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.12em; white-space: nowrap; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; position: relative; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); position: relative; }
+  .bar-fill::after { content: ''; position: absolute; right: -1px; top: -3px; width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 10px currentColor; background: currentColor; }
+  .bar-pct { font-family: var(--mono); font-size: 13px; font-weight: 500; flex-shrink: 0; min-width: 42px; text-align: right; }
+
+  .lab-context { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin: 0 48px 24px; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .lab-context.visible { display: block; }
+  .lab-context strong { color: var(--text); }
+
+  .stages { max-width: 960px; margin: 0 auto; padding: 0 48px 80px; }
+  .stage { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.3s; }
+  .stage.active { border-color: rgba(0,212,255,0.35); }
+  .stage.complete { border-color: rgba(57,255,155,0.35); }
+  .stage.locked { opacity: 0.4; pointer-events: none; }
+  .stage.fork { border-color: rgba(192,132,252,0.35); }
+
+  .stage-header { background: var(--card); padding: 18px 24px; cursor: pointer; display: flex; align-items: center; gap: 16px; user-select: none; transition: background 0.2s; }
+  .stage-header:hover { background: var(--card2); }
+  .stage-num { font-family: var(--mono); font-size: 11px; color: var(--text-dimmer); letter-spacing: 0.1em; flex-shrink: 0; width: 32px; }
+  .stage-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .stage-meta { flex: 1; }
+  .stage-title { font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .stage-desc { font-size: 12px; color: var(--text-dim); }
+  .stage-status { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .stage-pill { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(255,179,71,0.25); }
+  .stage-pill.common { background: var(--cyan-dim); color: var(--cyan); border-color: rgba(0,212,255,0.25); }
+  .stage-pill.fork-pill { background: var(--purple-dim); color: var(--purple); border-color: rgba(192,132,252,0.25); }
+  .stage-progress-ring { width: 32px; height: 32px; flex-shrink: 0; }
+  .chevron { color: var(--text-dimmer); font-size: 14px; transition: transform 0.3s; flex-shrink: 0; }
+  .stage.open .chevron { transform: rotate(180deg); }
+
+  .stage-body { display: none; background: var(--bg2); border-top: 1px solid var(--border); }
+  .stage.open .stage-body { display: block; }
+
+  .fork-notice { background: rgba(192,132,252,0.08); border-left: 3px solid var(--purple); margin: 16px 24px; border-radius: 0 8px 8px 0; padding: 12px 14px; font-size: 13px; color: var(--text); line-height: 1.6; }
+  .fork-notice span { color: var(--purple); font-weight: 600; }
+
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 24px; }
+  .tab-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); background: none; border: none; border-bottom: 2px solid transparent; padding: 12px 14px; cursor: pointer; transition: color 0.2s, border-color 0.2s; margin-bottom: -1px; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+  .tab-panel { display: none; padding: 20px 24px; }
+  .tab-panel.active { display: block; }
+
+  .task-list { display: flex; flex-direction: column; gap: 8px; }
+  .task-item { display: flex; align-items: flex-start; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+  .task-item:hover { border-color: rgba(0,212,255,0.3); background: var(--card2); }
+  .task-item.done { opacity: 0.5; }
+  .task-item.done .task-text { text-decoration: line-through; color: var(--text-dim); }
+  .task-check { width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 5px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 10px; transition: all 0.2s; color: transparent; }
+  .task-item.done .task-check { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+  .task-text { font-size: 13px; line-height: 1.5; }
+  .task-mini { display: block; font-family: var(--mono); font-size: 10px; color: var(--amber); margin-top: 4px; }
+  .task-lab { display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 20px; margin-left: 6px; text-transform: uppercase; vertical-align: middle; }
+  .lab-zhao { background: var(--green-dim); color: var(--green); }
+  .lab-ravi { background: var(--cyan-dim); color: var(--cyan); }
+  .lab-gom { background: var(--purple-dim); color: var(--purple); }
+  .lab-all { background: rgba(255,179,71,0.12); color: var(--amber); }
+
+  .tips-list { display: flex; flex-direction: column; gap: 10px; }
+  .tip-card { border-radius: 10px; padding: 12px 14px; border-left: 3px solid; background: var(--card); }
+  .tip-card.tip-cyan { border-left-color: var(--cyan); background: var(--cyan-dim); }
+  .tip-card.tip-amber { border-left-color: var(--amber); background: var(--amber-dim); }
+  .tip-card.tip-green { border-left-color: var(--green); background: var(--green-dim); }
+  .tip-card.tip-red { border-left-color: var(--red); background: rgba(255,77,106,0.08); }
+  .tip-card.tip-purple { border-left-color: var(--purple); background: var(--purple-dim); }
+  .tip-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
+  .tip-cyan .tip-label { color: var(--cyan); } .tip-amber .tip-label { color: var(--amber); }
+  .tip-green .tip-label { color: var(--green); } .tip-red .tip-label { color: var(--red); }
+  .tip-purple .tip-label { color: var(--purple); }
+  .tip-text { font-size: 13px; line-height: 1.6; color: var(--text); }
+  .tip-code { display: block; font-family: var(--mono); font-size: 11px; background: rgba(0,0,0,0.35); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; margin-top: 8px; color: var(--cyan); white-space: pre; overflow-x: auto; line-height: 1.6; }
+
+  .hp-section { margin-bottom: 16px; }
+  .hp-title { font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--text-dim); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .hp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .hp-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dimmer); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  .hp-table td { padding: 9px 12px; border-bottom: 1px solid rgba(30,48,80,0.5); vertical-align: top; line-height: 1.5; }
+  .hp-table tr:last-child td { border-bottom: none; }
+  .hp-param { font-family: var(--mono); color: var(--cyan); font-size: 11px; }
+  .hp-default { font-family: var(--mono); color: var(--amber); font-size: 11px; }
+  .hp-note { color: var(--text-dim); font-size: 12px; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    header, .stages { padding-left: 16px; padding-right: 16px; }
+    .lab-context { margin-left: 16px; margin-right: 16px; }
+    .stage-num { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">🤖 Narenthiran Mathavaraj — GT MS Robotics 2025</div>
+  <h1>RL Roadmap → <span>GT Lab Entry</span></h1>
+  <p class="subtitle">MuJoCo · SAC/PPO · CPO · 8–10 weeks · Target: Ye Zhao, Ravichandar, or Gombolay</p>
+
+  <div class="lab-selector">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--text-dimmer);letter-spacing:0.1em;text-transform:uppercase;align-self:center;margin-right:4px;">Target Lab:</div>
+    <button class="lab-btn" id="btn-all" onclick="setLab('all')">All Stages</button>
+    <button class="lab-btn" id="btn-zhao" onclick="setLab('zhao')">🦿 Ye Zhao — Nav RL</button>
+    <button class="lab-btn" id="btn-ravi" onclick="setLab('ravi')">🦾 Ravichandar — Constrained RL</button>
+    <button class="lab-btn" id="btn-gom" onclick="setLab('gom')">🧑‍🤝‍🧑 Gombolay — HRI + Nav</button>
+  </div>
+
+  <div class="mission-bar">
+    <span class="mission-label">MISSION PROGRESS</span>
+    <div class="bar-track">
+      <div class="bar-fill" id="globalBar" style="width:0%;background:linear-gradient(90deg,var(--cyan),var(--green));color:var(--cyan)"></div>
+    </div>
+    <span class="bar-pct" id="globalPct" style="color:var(--cyan)">0%</span>
+  </div>
+</header>
+
+<div class="lab-context" id="ctx-zhao">
+  <strong>Ye Zhao Lab path:</strong> RL for legged navigation, terrain-aware locomotion, off-road costmap generation. Your Versor PPO costmap work is the direct connection. Stage 3 onward focuses on point-robot nav → obstacle avoidance → costmap RL — extending what you started at ARTPARK into a clean, publishable sim result.
+</div>
+<div class="lab-context" id="ctx-ravi">
+  <strong>Ravichandar STAR Lab path:</strong> Constrained RL for dexterous manipulation. Stage 3 onward: replicate their IJCAI 2022 paper on the AdroitHandRelocate MuJoCo environment. Add a novel extension (dual constraints). Email hook: "I replicated your paper, extended it, here's the GitHub."
+</div>
+<div class="lab-context" id="ctx-gom">
+  <strong>Gombolay CORE Lab path:</strong> Multi-robot RL + HRI. Stage 3 onward: replicate MARBLER (multi-robot RL benchmark — MRS 2023 Best Paper). Add your own RL algorithm on top. Connection to your Versor multi-agent Follow-Me system.
+</div>
+
+<div class="stages" id="stagesContainer"></div>
+
+<script>
+const STAGES = [
+  {
+    id: "s1", num: "01", icon: "🔬", iconBg: "rgba(0,212,255,0.15)",
+    title: "MuJoCo + Gymnasium Foundation",
+    desc: "Install the stack, understand envs, read XML — same for all labs",
+    days: "3–4 days", pill: "common",
+    labs: ["all","zhao","ravi","gom"],
+    tasks: [
+      { id: "t1_1", text: "Install full stack", mini: "pip install mujoco gymnasium gymnasium-robotics stable-baselines3[extra] tensorboard safepo", labs: ["all"] },
+      { id: "t1_2", text: "Run HalfCheetah-v4 — just render it, print obs shape, call step() manually 10 times", labs: ["all"] },
+      { id: "t1_3", text: "Run AdroitHandRelocate-v1 — understand the 39-dim obs, 30-dim action (Adroit hand)", mini: "This is the STAR Lab paper's exact env", labs: ["ravi"] },
+      { id: "t1_4", text: "Run PointMaze_UMaze-v3 — this is the navigation env you'll build on for Ye Zhao path", mini: "Small maze, point robot, goal-conditioned", labs: ["zhao"] },
+      { id: "t1_5", text: "Run Reacher-v4 and print obs/action space — understand Box spaces, shapes, dtypes", labs: ["gom"] },
+      { id: "t1_6", text: "Open any env XML file — trace every tag to what you see rendered in the sim viewer", labs: ["all"] },
+      { id: "t1_7", text: "Mini-task: change one joint limit in an XML, re-render, confirm it changed", mini: "🎯 Goal: XML edit → visual change. Takes 20 mins.", labs: ["all"] },
+    ],
+    tips: [
+      { type: "tip-cyan", label: "Where XMLs live", text: "MuJoCo env XMLs are inside the gymnasium package:", code: "python -c \"import gymnasium; print(gymnasium.__file__)\"" },
+      { type: "tip-amber", label: "AdroitHandRelocate note", text: "AdroitHand obs has 39 dims: 30 joint positions + 6 object pose + 3 target pos. The action is 30-dim (finger torques). Don't memorise — just understand the structure.", },
+      { type: "tip-green", label: "PointMaze note", text: "PointMaze is the simplest navigation env. Point robot in a maze, goal is to reach a target position. No manipulation. Perfect baseline for nav RL.", code: "import gymnasium as gym\nenv = gym.make('PointMaze_UMaze-v3', render_mode='human')\nobs, info = env.reset()\nprint(obs['observation'].shape)  # (4,): x,y,vx,vy\nprint(obs['desired_goal'].shape)  # (2,): goal x,y" },
+      { type: "tip-red", label: "Don't skip this stage", text: "Every bug in stages 3–5 traces back to not understanding the env interface. Spend the 4 days properly." }
+    ],
+    hp: null
+  },
+  {
+    id: "s2", num: "02", icon: "🧠", iconBg: "rgba(57,255,155,0.15)",
+    title: "Continuous Control RL — SAC + PPO",
+    desc: "Train on standard envs using SB3 — learn what convergence looks like",
+    days: "5–7 days", pill: "common",
+    labs: ["all","zhao","ravi","gom"],
+    tasks: [
+      { id: "t2_1", text: "Train SAC on Pendulum-v1 using SB3 — one script, 50k steps, watch reward reach ~-200", labs: ["all"] },
+      { id: "t2_2", text: "Train PPO on Reacher-v4 — compare wall-clock time and sample efficiency vs SAC", labs: ["all"] },
+      { id: "t2_3", text: "Log both to TensorBoard — ep_rew_mean, value_loss, actor_loss. Understand each curve.", labs: ["all"] },
+      { id: "t2_4", text: "Mini-task: change Pendulum reward to r = -angle² - 0.1*velocity² — retrain, observe behavior change", mini: "🎯 Goal: understand how reward shaping changes policy", labs: ["all"] },
+      { id: "t2_5", text: "Run same SAC config 3x with different seeds — plot variance. RL is stochastic — single seed means nothing.", labs: ["all"] },
+      { id: "t2_6", text: "Train SAC on HalfCheetah-v4 for 300k steps — your first real continuous control result", labs: ["all"] },
+      { id: "t2_7", text: "Save trained model with model.save() — reload and run inference. Confirm it still works.", labs: ["all"] },
+    ],
+    tips: [
+      { type: "tip-cyan", label: "SAC vs PPO — which to use", text: "For manipulation (Ravichandar path): SAC. Sample-efficient, handles high-DOF action spaces.\nFor navigation (Ye Zhao path): PPO. Simpler, works well for low-DOF nav tasks.\nFor MARBLER (Gombolay path): PPO. Multi-robot envs use discrete/mixed actions where PPO is more stable." },
+      { type: "tip-amber", label: "Common Trap", text: "Never judge a run by the last episode reward. Always look at rolling mean over 100 episodes. A single lucky episode means nothing. ep_rew_mean in TensorBoard is your real signal." },
+      { type: "tip-green", label: "Seed Protocol", text: "Always run 3 seeds before claiming something works.", code: "for seed in [42, 123, 777]:\n    model = SAC('MlpPolicy', env, seed=seed)\n    model.learn(100_000)" },
+      { type: "tip-red", label: "4GB VRAM", text: "Keep device='cpu' for all SB3 training here. MuJoCo physics is CPU-bound. MLP policies are tiny. Your GPU is irrelevant until visual obs experiments." }
+    ],
+    hp: {
+      algo: "SAC", baseline_env: "Pendulum-v1",
+      params: [
+        { param: "learning_rate", default: "3e-4", note: "Start here. Drop to 1e-4 if unstable." },
+        { param: "buffer_size", default: "1_000_000", note: "Reduce to 300k if RAM limited." },
+        { param: "batch_size", default: "256", note: "Try 512 if training is noisy." },
+        { param: "gamma", default: "0.99", note: "Discount. Rarely needs changing at this stage." },
+        { param: "ent_coef", default: "auto", note: "Leave as auto — SAC's auto entropy tuning is one of its best features." },
+      ]
+    }
+  },
+  {
+    id: "s3z", num: "03A", icon: "🗺️", iconBg: "rgba(57,255,155,0.15)",
+    title: "Nav RL — Point Robot to Goal",
+    desc: "Ye Zhao path: PPO agent navigates maze, avoids obstacles → connects to Versor work",
+    days: "6–8 days", pill: "lab",
+    labs: ["zhao"],
+    fork: "zhao",
+    tasks: [
+      { id: "t3z_1", text: "Train PPO on PointMaze_UMaze-v3 until it solves the maze consistently (reward > -50)", labs: ["zhao"] },
+      { id: "t3z_2", text: "Extend to PointMaze_LargeMaze-v3 — larger map, harder navigation. Compare sample efficiency.", labs: ["zhao"] },
+      { id: "t3z_3", text: "Build a custom nav env: FlatTerrainNavEnv — point robot, random start, random goal, 5 static obstacles", mini: "Use gymnasium.Env + MuJoCo XML. Reward: -dist_to_goal, +10 on reach, -5 on collision", labs: ["zhao"] },
+      { id: "t3z_4", text: "Train PPO on FlatTerrainNavEnv — 500k steps. Get success rate > 70% on random goals.", labs: ["zhao"] },
+      { id: "t3z_5", text: "Add obstacle type to obs: [robot_pos, robot_vel, goal_pos, nearest_obstacle_dist×4]. Train again.", labs: ["zhao"] },
+      { id: "t3z_6", text: "Mini-task: implement a simple costmap — 20×20 grid, 1=obstacle, 0=free. Agent observes local costmap window.", mini: "🎯 This directly extends your Versor PPO costmap work", labs: ["zhao"] },
+      { id: "t3z_7", text: "Compare PPO with costmap obs vs PPO without — does costmap observation improve sample efficiency?", labs: ["zhao"] },
+    ],
+    tips: [
+      { type: "tip-green", label: "Connection to Ye Zhao", text: "His Opt2Skill paper trains RL policies for terrain-aware locomotion. Your costmap observation idea (PPO observing a local grid of terrain cost) is the same concept applied to navigation. This is your pitch." },
+      { type: "tip-cyan", label: "GoalEnv interface", text: "PointMaze uses the GoalEnv interface — obs is a dict with 'observation', 'achieved_goal', 'desired_goal'. SB3 handles this natively:", code: "from stable_baselines3 import HerReplayBuffer\nmodel = SAC(\n    'MultiInputPolicy', env,\n    replay_buffer_class=HerReplayBuffer\n)" },
+      { type: "tip-amber", label: "Reward shaping for nav", text: "Sparse reward (only +10 on reach) will not converge. Always use dense shaped reward: r = -dist_to_goal + collision_penalty. You can always switch to sparse later once agent understands the task." },
+      { type: "tip-purple", label: "Email hook after this stage", text: "You can now email Ye Zhao: 'I trained a PPO agent with costmap observations for point-robot navigation in MuJoCo — extends my Versor PPO costmap work to structured simulation. Here is the GitHub.' That is a real, specific, honest pitch." }
+    ],
+    hp: {
+      algo: "PPO", baseline_env: "PointMaze_UMaze-v3 → Custom FlatTerrainNavEnv",
+      params: [
+        { param: "n_steps", default: "2048", note: "Steps per rollout. Navigation tasks need longer rollouts — try 4096 for large maze." },
+        { param: "batch_size", default: "64", note: "PPO mini-batch. Keep small — 64 or 128." },
+        { param: "n_epochs", default: "10", note: "PPO update epochs per rollout. Rarely needs changing." },
+        { param: "clip_range", default: "0.2", note: "PPO clipping. Lower to 0.1 if policy diverges." },
+        { param: "ent_coef", default: "0.01", note: "Entropy bonus — encourages exploration. Critical for maze tasks. Try 0.005–0.05." },
+      ]
+    }
+  },
+  {
+    id: "s3r", num: "03B", icon: "🦾", iconBg: "rgba(0,212,255,0.15)",
+    title: "Constrained RL — Replicate STAR Lab Paper",
+    desc: "Ravichandar path: CPO on AdroitHandRelocate — the exact paper replication",
+    days: "7–10 days", pill: "lab",
+    labs: ["ravi"],
+    fork: "ravi",
+    tasks: [
+      { id: "t3r_1", text: "Clone SafePO repo: git clone https://github.com/PKU-Alignment/safe-policy-optimization", labs: ["ravi"] },
+      { id: "t3r_2", text: "Train baseline PPO on AdroitHandRelocate-v1 — 500k steps. Log reward, success rate.", labs: ["ravi"] },
+      { id: "t3r_3", text: "Train CPO on AdroitHandRelocate-v1 — same steps. Constraint: EE must stay within sphere R=0.4 of object.", labs: ["ravi"] },
+      { id: "t3r_4", text: "Define constraint cost function: cost=1 if dist(EE, object) > R, else 0. Add to env's step() info dict.", mini: "SafePO reads 'cost' from info dict automatically", labs: ["ravi"] },
+      { id: "t3r_5", text: "Run CPO with 3 constraint thresholds: R=0.3 (strict), R=0.4 (medium), R=0.6 (loose)", labs: ["ravi"] },
+      { id: "t3r_6", text: "Plot: reward vs steps for PPO vs CPO×3. Also plot constraint violations per episode.", labs: ["ravi"] },
+      { id: "t3r_7", text: "Extension: add 2nd constraint — joint velocity must stay below threshold. Does dual-constraint CPO converge?", mini: "🎯 This is your novel contribution. The paper only uses position constraints.", labs: ["ravi"] },
+      { id: "t3r_8", text: "Write README with training curves GIF + result table. Push to GitHub.", labs: ["ravi"] },
+    ],
+    tips: [
+      { type: "tip-cyan", label: "SafePO cost interface", text: "SafePO CPO reads cost from the info dict your env returns:", code: "def step(self, action):\n    obs, reward, term, trunc, info = super().step(action)\n    ee_pos = self._get_ee_pos()\n    obj_pos = self.data.body('Object').xpos\n    dist = np.linalg.norm(ee_pos - obj_pos)\n    info['cost'] = float(dist > 0.4)  # 1 if violated\n    return obs, reward, term, trunc, info" },
+      { type: "tip-green", label: "Connection to Ravichandar", text: "The paper was written by his MS student Abhineet Jain (→Tesla). You're replicating an MS student's work and extending it. Your email: 'I replicated Abhineet's constrained RL paper and added joint velocity constraints as a second cost. Success rate improved by X% with fewer constraint violations.'" },
+      { type: "tip-amber", label: "AdroitHand observation", text: "The 39-dim obs includes joint velocities. You can extract joint vels directly to compute your velocity constraint — no additional obs needed.", code: "# Joint velocities are in obs[30:39] (wrist+finger vels)\njoint_vels = obs[30:39]\nvel_cost = float(np.max(np.abs(joint_vels)) > VEL_THRESHOLD)" },
+      { type: "tip-red", label: "CPO is slow", text: "CPO has more overhead than PPO per step — it solves a constrained optimization at each update. On CPU with AdroitHand, expect 500k steps to take 2–3 hours. Start overnight runs." }
+    ],
+    hp: {
+      algo: "CPO (SafePO)", baseline_env: "AdroitHandRelocate-v1",
+      params: [
+        { param: "cost_limit", default: "25.0", note: "Constraint budget per episode. Start at 25 (medium). Lower = stricter." },
+        { param: "learning_rate", default: "1e-4", note: "CPO with AdroitHand needs lower LR than standard PPO." },
+        { param: "steps_per_epoch", default: "20_000", note: "Longer rollouts needed for hand manipulation tasks." },
+        { param: "update_iters", default: "1", note: "CPO inner loop iterations. Keep at 1 unless diverging." },
+        { param: "target_kl", default: "0.02", note: "KL divergence budget. Lower = more conservative policy updates." },
+      ]
+    }
+  },
+  {
+    id: "s3g", num: "03C", icon: "🤝", iconBg: "rgba(192,132,252,0.15)",
+    title: "Multi-Robot RL — MARBLER Replication",
+    desc: "Gombolay path: run MARBLER benchmark, add your PPO baseline, compare",
+    days: "6–8 days", pill: "lab",
+    labs: ["gom"],
+    fork: "gom",
+    tasks: [
+      { id: "t3g_1", text: "Clone MARBLER: git clone https://github.com/GT-STAR-Lab/MARBLER", labs: ["gom"] },
+      { id: "t3g_2", text: "Install dependencies and run provided example — get 2 robots navigating in Robotarium sim", labs: ["gom"] },
+      { id: "t3g_3", text: "Run all 3 provided baseline algorithms. Log reward curves for each.", labs: ["gom"] },
+      { id: "t3g_4", text: "Implement your own PPO baseline from scratch (raw PyTorch, no SB3) — plug into MARBLER's env interface", mini: "This is the key contribution — they don't have a raw PPO baseline", labs: ["gom"] },
+      { id: "t3g_5", text: "Compare your PPO vs their baselines on the cooperative navigation task — plot results", labs: ["gom"] },
+      { id: "t3g_6", text: "Extension: add a 3rd robot type (heterogeneous team) — how does your PPO handle capability mismatch?", mini: "🎯 Connects to their CASH capability-aware paper", labs: ["gom"] },
+      { id: "t3g_7", text: "Write README. Record a GIF of 2 robots cooperating. Push to GitHub.", labs: ["gom"] },
+    ],
+    tips: [
+      { type: "tip-purple", label: "Connection to Gombolay", text: "MARBLER was written by an MS student in CORE Lab (Reza Torbati → GTRI) and won Best Paper at MRS 2023. You're extending it. Your email: 'I ran MARBLER, added a PPO baseline, and tested it on heterogeneous teams — extends the benchmark in the direction of your CASH paper.'" },
+      { type: "tip-cyan", label: "Robotarium", text: "MARBLER uses the Robotarium simulator — GT's own multi-robot research platform. It's lightweight (no heavy physics). You can run it on any laptop with no GPU.", code: "# Install Robotarium\npip install robotarium-python-simulator\n# Then follow MARBLER README" },
+      { type: "tip-amber", label: "Your Follow-Me connection", text: "Your Versor Follow-Me system is a multi-robot coordination problem (person + robot + obstacles). Frame your MARBLER work as 'extending multi-robot RL to scenarios with a dynamic human target' — directly bridges your Versor work to CORE Lab's research." },
+      { type: "tip-green", label: "PPO for multi-agent", text: "Multi-agent PPO (MAPPO) is the standard. Each robot has its own policy, but they share weights (parameter sharing). SB3 doesn't support this natively — use raw PyTorch or the epymarl library.", code: "# Use epymarl for MAPPO baseline\npip install epymarl" }
+    ],
+    hp: {
+      algo: "MAPPO / PPO", baseline_env: "MARBLER Cooperative Navigation",
+      params: [
+        { param: "share_parameters", default: "True", note: "Share weights across robots. Standard in multi-agent RL." },
+        { param: "n_steps", default: "128", note: "Shorter rollouts for multi-agent — more frequent updates." },
+        { param: "ent_coef", default: "0.01", note: "Exploration is critical in multi-agent — keep entropy non-zero." },
+        { param: "n_agents", default: "2", note: "Start with 2 robots. Scale to 3 only after convergence." },
+      ]
+    }
+  },
+  {
+    id: "s4", num: "04", icon: "📊", iconBg: "rgba(255,179,71,0.15)",
+    title: "Analysis, Plots + GitHub Polish",
+    desc: "Turn your results into something a professor can look at in 2 minutes",
+    days: "3–4 days", pill: "common",
+    labs: ["all","zhao","ravi","gom"],
+    tasks: [
+      { id: "t4_1", text: "Generate training curves: reward vs steps, smoothed with window=10. 3 seeds, show mean ± std band.", labs: ["all"] },
+      { id: "t4_2", text: "For Ravichandar path: add constraint violation plot — violations per episode over training for each CPO variant.", labs: ["ravi"] },
+      { id: "t4_3", text: "For Ye Zhao path: add success rate plot — % episodes where agent reached goal within time limit.", labs: ["zhao"] },
+      { id: "t4_4", text: "For Gombolay path: add cooperation metric — fraction of episodes where both robots reached their goals.", labs: ["gom"] },
+      { id: "t4_5", text: "Record a 30-second GIF of the trained policy running in the sim viewer — add to README", labs: ["all"] },
+      { id: "t4_6", text: "Write README: 1-paragraph problem statement, method, result table, GIF, install instructions", labs: ["all"] },
+      { id: "t4_7", text: "Run from-scratch install test in a fresh virtualenv — confirm your README instructions work", labs: ["all"] },
+    ],
+    tips: [
+      { type: "tip-cyan", label: "Plotting with seaborn", text: "Mean ± std shading over 3 seeds:", code: "import pandas as pd, seaborn as sns, matplotlib.pyplot as plt\n# Load 3 seed csvs, merge\nsns.lineplot(data=df, x='step', y='reward', errorbar='sd')\nplt.savefig('training_curve.png', dpi=150)" },
+      { type: "tip-green", label: "GIF recording", text: "Record env with imageio:", code: "import imageio\nframes = []\nfor _ in range(200):\n    obs, _ = env.step(model.predict(obs)[0])\n    frames.append(env.render())\nimageio.mimsave('policy.gif', frames, fps=30)" },
+      { type: "tip-amber", label: "README structure", text: "Professors scan repos in 60 seconds. Order: GIF first, then 3-sentence problem statement, then result table, then install. Don't bury the GIF." }
+    ],
+    hp: null
+  },
+  {
+    id: "s5", num: "05", icon: "📧", iconBg: "rgba(192,132,252,0.15)",
+    title: "Email the Professor — Week 1 of GT",
+    desc: "Send the email with GitHub attached. You've earned the right to reach out.",
+    days: "Do it week 1", pill: "lab",
+    labs: ["all","zhao","ravi","gom"],
+    tasks: [
+      { id: "t5_1", text: "For Ye Zhao: Email subject: 'MS Student (Fall 2025) — PPO Costmap Nav RL in MuJoCo + Versor Deployment'", labs: ["zhao"] },
+      { id: "t5_2", text: "For Ravichandar: Email subject: 'MS Student — Replicated Your Constrained RL Paper + Dual Constraint Extension'", labs: ["ravi"] },
+      { id: "t5_3", text: "For Gombolay: Email subject: 'MS Student — Extended MARBLER with PPO Baseline + Heterogeneous Team Test'", labs: ["gom"] },
+      { id: "t5_4", text: "Email body rule: 3 sentences on what you did → 1 sentence on the specific connection to their paper → GitHub link → ask for 15 minutes. That's it. No longer.", labs: ["all"] },
+      { id: "t5_5", text: "Attach your CV — with the RL project listed honestly as 'MuJoCo simulation, no hardware deployment'", labs: ["all"] },
+      { id: "t5_6", text: "Send it in week 1 of semester — not week 4. Lab spots fill early.", labs: ["all"] },
+      { id: "t5_7", text: "If no reply in 10 days: one follow-up email, then go to office hours in person with laptop open to your repo.", labs: ["all"] },
+    ],
+    tips: [
+      { type: "tip-green", label: "Why this works", text: "99% of MS students email professors saying 'I am interested in your research.' You email saying 'I ran your code, extended it, here is the result.' That is a categorically different signal. Professors reply to the second type." },
+      { type: "tip-cyan", label: "Ye Zhao hook", text: "Mention your Versor PPO costmap work explicitly: 'My off-road nav RL work at ARTPARK-IISC motivated this — I wanted to understand the sim foundations before extending it to legged terrain.'" },
+      { type: "tip-amber", label: "Ravichandar hook", text: "Mention two things: the replication AND the Spider Arm background. 'I replicated your constrained RL paper. I also built a 6-DOF arm on a $700 budget at NIT-Trichy — I see a direct path from this sim work to real manipulation.'" },
+      { type: "tip-purple", label: "Gombolay hook", text: "Connect MARBLER to your Follow-Me system: 'Multi-robot RL is directly relevant to my ARTPARK work — a person-following robot is a 2-agent coordination problem. MARBLER gave me the formal framework to think about it.'" }
+    ],
+    hp: null
+  }
+];
+
+let currentLab = 'all';
+
+function setLab(lab) {
+  currentLab = lab;
+  document.querySelectorAll('.lab-btn').forEach(b => {
+    b.className = 'lab-btn';
+    if (b.id === 'btn-' + lab) b.classList.add('active-' + (lab === 'all' ? 'ravi' : lab));
+  });
+  ['zhao','ravi','gom'].forEach(l => {
+    const ctx = document.getElementById('ctx-' + l);
+    if (ctx) ctx.classList.toggle('visible', lab === l);
+  });
+  renderStages();
+}
+
+function getChecked() {
+  try { return JSON.parse(localStorage.getItem('naren_lab_roadmap') || '{}'); } catch { return {}; }
+}
+function saveChecked(c) { localStorage.setItem('naren_lab_roadmap', JSON.stringify(c)); }
+
+function stageVisible(stage) {
+  if (currentLab === 'all') return true;
+  return stage.labs.includes(currentLab);
+}
+
+function calcProgress(checked) {
+  const visibleStages = STAGES.filter(stageVisible);
+  const allTasks = visibleStages.flatMap(s => s.tasks.filter(t => t.labs.includes(currentLab) || t.labs.includes('all')));
+  const done = allTasks.filter(t => checked[t.id]).length;
+  return { total: allTasks.length, done, pct: allTasks.length ? Math.round((done / allTasks.length) * 100) : 0 };
+}
+
+function getStagePct(stage, checked) {
+  const tasks = stage.tasks.filter(t => t.labs.includes(currentLab) || t.labs.includes('all'));
+  if (!tasks.length) return 100;
+  return Math.round(tasks.filter(t => checked[t.id]).length / tasks.length * 100);
+}
+
+function makeRing(pct, color) {
+  const r = 12, cx = 16, cy = 16, circ = 2 * Math.PI * r, dash = (pct / 100) * circ;
+  return `<svg viewBox="0 0 32 32" width="32" height="32">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#1E3050" stroke-width="2.5"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="2.5"
+      stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ/4}" stroke-linecap="round"/>
+    <text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="7" fill="${color}"
+      font-family="JetBrains Mono,monospace">${pct}%</text></svg>`;
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderStages() {
+  const checked = getChecked();
+  const { pct } = calcProgress(checked);
+  document.getElementById('globalBar').style.width = pct + '%';
+  document.getElementById('globalPct').textContent = pct + '%';
+
+  const container = document.getElementById('stagesContainer');
+  container.innerHTML = '';
+
+  const visibleStages = STAGES.filter(stageVisible);
+
+  visibleStages.forEach((stage, idx) => {
+    const stagePct = getStagePct(stage, checked);
+    const isComplete = stagePct === 100;
+    const isActive = !isComplete && (idx === 0 || getStagePct(visibleStages[idx-1], checked) === 100);
+    const isFork = !!stage.fork;
+    const ringColor = isComplete ? '#39FF9B' : isFork ? '#C084FC' : '#00D4FF';
+
+    const el = document.createElement('div');
+    el.className = 'stage' + (isComplete ? ' complete' : isActive ? ' active' : idx > 0 && !isComplete ? ' locked' : '') + (isFork ? ' fork' : '');
+    if (idx === 0) el.classList.remove('locked');
+    el.dataset.id = stage.id;
+
+    const visibleTasks = stage.tasks.filter(t => t.labs.includes(currentLab) || t.labs.includes('all'));
+    const labColors = { zhao: 'lab-zhao', ravi: 'lab-ravi', gom: 'lab-gom', all: 'lab-all' };
+
+    const tasksHTML = visibleTasks.map(t => `
+      <div class="task-item ${checked[t.id] ? 'done' : ''}" data-task="${t.id}">
+        <div class="task-check">${checked[t.id] ? '✓' : ''}</div>
+        <div>
+          <span class="task-text">${t.text}</span>
+          ${t.mini ? `<span class="task-mini">↳ ${t.mini}</span>` : ''}
+        </div>
+      </div>`).join('');
+
+    const tipsHTML = stage.tips.map(t => `
+      <div class="tip-card ${t.type}">
+        <div class="tip-label">${t.label}</div>
+        <div class="tip-text">${t.text}</div>
+        ${t.code ? `<code class="tip-code">${escapeHTML(t.code)}</code>` : ''}
+      </div>`).join('');
+
+    let hpHTML = '<p style="color:var(--text-dim);font-size:13px;padding:4px 0">No hyperparameters at this stage — focus on understanding first.</p>';
+    if (stage.hp) {
+      const rows = stage.hp.params.map(p => `<tr><td><span class="hp-param">${p.param}</span></td><td><span class="hp-default">${p.default}</span></td><td><span class="hp-note">${p.note}</span></td></tr>`).join('');
+      hpHTML = `<div class="hp-section">
+        <div class="hp-title">Algorithm: ${stage.hp.algo} &nbsp;|&nbsp; Env: ${stage.hp.baseline_env}</div>
+        <table class="hp-table">
+          <thead><tr><th>Parameter</th><th>Default</th><th>When to change</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table></div>`;
+    }
+
+    const pillClass = stage.pill === 'common' ? 'common' : stage.fork ? 'fork-pill' : '';
+    const pillText = stage.pill === 'common' ? 'All Labs' : stage.fork ? (stage.fork === 'zhao' ? 'Ye Zhao' : stage.fork === 'ravi' ? 'Ravichandar' : 'Gombolay') : stage.days;
+
+    const forkNotice = isFork ? `<div class="fork-notice">
+      <span>Lab-specific stage</span> — only appears when you select the matching lab filter above. 
+      ${stage.fork === 'zhao' ? 'Ye Zhao (Nav RL)' : stage.fork === 'ravi' ? 'Ravichandar (Constrained RL)' : 'Gombolay (Multi-Robot RL)'} path.
+    </div>` : '';
+
+    el.innerHTML = `
+      <div class="stage-header">
+        <span class="stage-num">${stage.num}</span>
+        <div class="stage-icon" style="background:${stage.iconBg}">${stage.icon}</div>
+        <div class="stage-meta">
+          <div class="stage-title">${stage.title}</div>
+          <div class="stage-desc">${stage.desc}</div>
+        </div>
+        <div class="stage-status">
+          <span class="stage-pill ${pillClass}">${pillText}</span>
+          <div class="stage-progress-ring">${makeRing(stagePct, ringColor)}</div>
+        </div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="stage-body">
+        ${forkNotice}
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tasks">Tasks</button>
+          <button class="tab-btn" data-tab="tips">Tips</button>
+          <button class="tab-btn" data-tab="hp">Hyperparams</button>
+        </div>
+        <div class="tab-panel active" data-panel="tasks"><div class="task-list">${tasksHTML}</div></div>
+        <div class="tab-panel" data-panel="tips"><div class="tips-list">${tipsHTML}</div></div>
+        <div class="tab-panel" data-panel="hp">${hpHTML}</div>
+      </div>`;
+
+    container.appendChild(el);
+  });
+
+  attachEvents();
+}
+
+function attachEvents() {
+  document.querySelectorAll('.stage-header').forEach(h => {
+    h.addEventListener('click', e => {
+      if (e.target.closest('.task-item')) return;
+      h.closest('.stage').classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const body = btn.closest('.stage-body');
+      body.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      body.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      body.querySelector(`[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+    });
+  });
+  document.querySelectorAll('.task-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = item.dataset.task;
+      const stageId = item.closest('.stage').dataset.id;
+      const checked = getChecked();
+      checked[id] = !checked[id];
+      saveChecked(checked);
+      renderStages();
+      const reopened = document.querySelector(`[data-id="${stageId}"]`);
+      if (reopened) { reopened.classList.add('open'); }
+    });
+  });
+  const firstActive = document.querySelector('.stage.active');
+  if (firstActive) firstActive.classList.add('open');
+}
+
+setLab('all');
+</script>
+</body>
+</html>

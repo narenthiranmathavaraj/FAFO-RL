@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trick Shot Robot — RL Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080D1A;
+    --bg2: #0F1628;
+    --card: #131D30;
+    --card2: #1A2640;
+    --border: #1E3050;
+    --cyan: #00D4FF;
+    --cyan-dim: rgba(0,212,255,0.12);
+    --cyan-glow: rgba(0,212,255,0.25);
+    --amber: #FFB347;
+    --amber-dim: rgba(255,179,71,0.12);
+    --green: #39FF9B;
+    --green-dim: rgba(57,255,155,0.12);
+    --red: #FF4D6A;
+    --text: #E8EDF5;
+    --text-dim: #7A8BA8;
+    --text-dimmer: #3D5070;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 40px 48px 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  h1 span { color: var(--cyan); }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  /* ── MISSION PROGRESS BAR ── */
+  .mission-bar {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .mission-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: visible;
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan) 0%, var(--green) 100%);
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+
+  .bar-fill::after {
+    content: '';
+    position: absolute;
+    right: -1px; top: -3px;
+    width: 12px; height: 12px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+
+  .bar-pct {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--cyan);
+    font-weight: 500;
+    flex-shrink: 0;
+    min-width: 42px;
+    text-align: right;
+  }
+
+  /* ── STAGE CARDS ── */
+  .stages { max-width: 900px; margin: 0 auto; padding: 0 48px 80px; }
+
+  .stage {
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+    position: relative;
+  }
+
+  .stage.active { border-color: rgba(0,212,255,0.35); }
+  .stage.complete { border-color: rgba(57,255,155,0.35); }
+  .stage.locked { opacity: 0.45; pointer-events: none; }
+
+  .stage-header {
+    background: var(--card);
+    padding: 20px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .stage-header:hover { background: var(--card2); }
+
+  .stage-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dimmer);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    width: 32px;
+  }
+
+  .stage-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .stage-meta { flex: 1; }
+
+  .stage-title {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .stage-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .stage-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .stage-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+
+  .pill-days {
+    background: var(--amber-dim);
+    color: var(--amber);
+    border: 1px solid rgba(255,179,71,0.25);
+  }
+
+  .stage-progress-ring {
+    width: 32px; height: 32px;
+    flex-shrink: 0;
+  }
+
+  .chevron {
+    color: var(--text-dimmer);
+    font-size: 14px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .stage.open .chevron { transform: rotate(180deg); }
+
+  /* ── STAGE BODY ── */
+  .stage-body {
+    display: none;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+  }
+
+  .stage.open .stage-body { display: block; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .tab-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: -1px;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+  .tab-panel { display: none; padding: 24px; }
+  .tab-panel.active { display: block; }
+
+  /* ── TASKS ── */
+  .task-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .task-item:hover { border-color: rgba(0,212,255,0.3); background: var(--card2); }
+  .task-item.done { opacity: 0.55; }
+  .task-item.done .task-text { text-decoration: line-through; color: var(--text-dim); }
+
+  .task-check {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    transition: all 0.2s;
+    color: transparent;
+  }
+
+  .task-item.done .task-check {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .task-text { font-size: 13.5px; line-height: 1.5; }
+
+  .task-mini {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    margin-top: 4px;
+  }
+
+  .code-tag {
+    display: inline;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: rgba(0,212,255,0.08);
+    color: var(--cyan);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  /* ── TIPS ── */
+  .tips-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .tip-card {
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-left: 3px solid;
+    background: var(--card);
+    border-color: var(--card);
+  }
+
+  .tip-card.tip-cyan { border-left-color: var(--cyan); background: var(--cyan-dim); }
+  .tip-card.tip-amber { border-left-color: var(--amber); background: var(--amber-dim); }
+  .tip-card.tip-green { border-left-color: var(--green); background: var(--green-dim); }
+  .tip-card.tip-red { border-left-color: var(--red); background: rgba(255,77,106,0.08); }
+
+  .tip-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .tip-cyan .tip-label { color: var(--cyan); }
+  .tip-amber .tip-label { color: var(--amber); }
+  .tip-green .tip-label { color: var(--green); }
+  .tip-red .tip-label { color: var(--red); }
+
+  .tip-text { font-size: 13px; line-height: 1.6; color: var(--text); }
+
+  .tip-code {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    color: var(--cyan);
+    white-space: pre;
+    overflow-x: auto;
+    line-height: 1.7;
+  }
+
+  /* ── HYPERPARAMS ── */
+  .hp-section { margin-bottom: 20px; }
+  .hp-title {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .hp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+
+  .hp-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hp-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(30,48,80,0.5);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .hp-table tr:last-child td { border-bottom: none; }
+
+  .hp-param { font-family: var(--mono); color: var(--cyan); font-size: 12px; }
+  .hp-default { font-family: var(--mono); color: var(--amber); font-size: 12px; }
+  .hp-note { color: var(--text-dim); font-size: 12px; }
+
+  .ax-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+
+  .ax-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── INSTALL BOX ── */
+  .install-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .install-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-dimmer);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header, .stages { padding-left: 20px; padding-right: 20px; }
+    .mission-bar { gap: 12px; }
+    .stage-num { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">🏀 Project: Trick Shot Robot</div>
+  <h1>RL <span>Mission</span> Roadmap</h1>
+  <p class="subtitle">MuJoCo · SAC/PPO · RTX 4050 · 6–8 weeks to trick-shot sim</p>
+
+  <div class="mission-bar">
+    <span class="mission-label">MISSION PROGRESS</span>
+    <div class="bar-track">
+      <div class="bar-fill" id="globalBar" style="width:0%"></div>
+    </div>
+    <span class="bar-pct" id="globalPct">0%</span>
+  </div>
+</header>
+
+<div class="stages" id="stagesContainer"></div>
+
+<script>
+const STAGES = [
+  {
+    id: "s1",
+    num: "01",
+    icon: "🔬",
+    iconBg: "rgba(0,212,255,0.15)",
+    title: "MuJoCo + Gym Foundation",
+    desc: "Install the stack, poke at existing envs, read XML",
+    days: "3–4 days",
+    tasks: [
+      { id: "t1_1", text: "Install the full stack", mini: "pip install mujoco gymnasium[mujoco] stable-baselines3[extra] tensorboard" },
+      { id: "t1_2", text: "Run HalfCheetah-v4 and Reacher-v4 — just render them, print obs shape and reward on each step" },
+      { id: "t1_3", text: "Call env.step() manually in a loop — understand the (obs, reward, terminated, truncated, info) tuple" },
+      { id: "t1_4", text: "Open Reacher's XML at mujoco/envs/assets/reacher.xml — trace every tag to what you see rendered" },
+      { id: "t1_5", text: "Mini-task: Change Reacher arm length in XML, add a sphere geom, change a joint limit. Re-render and confirm it worked.", mini: "🎯 Goal: see your XML change reflected in the sim" },
+      { id: "t1_6", text: "Understand observation_space and action_space types — Box, Discrete, their shapes and dtypes" }
+    ],
+    tips: [
+      { type: "tip-cyan", label: "Workflow Trick", text: "Use env.render(mode='human') while stepping manually. Seeing the sim react to your actions in real-time builds intuition faster than reading docs." },
+      { type: "tip-amber", label: "Common Trap", text: "Don't confuse terminated (episode done naturally) and truncated (time limit hit). For training they're combined as done = terminated or truncated, but logging them separately tells you if your agent is actually dying or just timing out." },
+      { type: "tip-green", label: "Pro Tip", text: "Pin your mujoco version. Between mujoco 2.x and 3.x the XML syntax changed. SB3 tutorials mostly assume 2.3.x.", code: "pip install mujoco==2.3.7 gymnasium==0.29.1" },
+      { type: "tip-cyan", label: "Debug Tip", text: "To quickly check what an XML change does without writing Python, use the MuJoCo viewer directly:", code: "python -m mujoco.viewer --mjcf=your_model.xml" }
+    ],
+    hp: null
+  },
+  {
+    id: "s2",
+    num: "02",
+    icon: "🧠",
+    iconBg: "rgba(57,255,155,0.15)",
+    title: "Continuous Control RL",
+    desc: "Train SAC and PPO on standard envs — without writing the algo",
+    days: "5–7 days",
+    tasks: [
+      { id: "t2_1", text: "Train SAC on Pendulum-v1 using SB3 — one script, watch it converge to reward ~-200" },
+      { id: "t2_2", text: "Train PPO on Reacher-v4 — compare wall-clock time and sample efficiency vs SAC" },
+      { id: "t2_3", text: "Log both runs to TensorBoard — ep_rew_mean, value_loss, actor_loss curves" },
+      { id: "t2_4", text: "Mini-task: Rewrite Pendulum reward as r = -angle² - 0.1*velocity² — retrain and observe behavior change", mini: "🎯 Goal: understand how reward shaping changes policy" },
+      { id: "t2_5", text: "Run the same SAC config 3 times with different seeds — plot variance across runs" },
+      { id: "t2_6", text: "Save a trained model with model.save() and reload it — confirm inference works" }
+    ],
+    tips: [
+      { type: "tip-cyan", label: "SAC vs PPO", text: "For your project, SAC will be your main algorithm. It's sample-efficient and handles continuous actions natively. PPO is your fallback — easier to tune but needs more samples. Start with SAC." },
+      { type: "tip-amber", label: "Common Trap", text: "Never judge a run by the last episode reward. Always look at a rolling mean over 100 episodes. A single lucky episode means nothing." },
+      { type: "tip-green", label: "Seed Protocol", text: "Always run at least 3 seeds before claiming an algorithm or config 'works'. Single-seed results are meaningless in RL.", code: "for seed in [42, 123, 777]:\n  model = SAC('MlpPolicy', env, seed=seed)\n  model.learn(50_000)" },
+      { type: "tip-red", label: "4GB VRAM Warning", text: "Keep device='cpu' for all SB3 training in these stages. MuJoCo physics is CPU-bound anyway, and MLP policies are tiny. Your 4GB VRAM is irrelevant here — save GPU headroom for Stage 5 visual obs experiments." }
+    ],
+    hp: {
+      algo: "SAC",
+      baseline_env: "Pendulum-v1",
+      params: [
+        { param: "learning_rate", default: "3e-4", note: "Start here. If training is unstable, drop to 1e-4. If converging too slow, try 5e-4." },
+        { param: "buffer_size", default: "1_000_000", note: "For 4GB RAM, safe to reduce to 300_000 if you hit memory limits." },
+        { param: "batch_size", default: "256", note: "Larger = more stable gradients. 512 if training is noisy. Keep powers of 2." },
+        { param: "tau", default: "0.005", note: "Target network soft-update rate. Rarely needs changing." },
+        { param: "gamma", default: "0.99", note: "Discount. For throw tasks with sparse rewards at episode end, try 0.995." },
+        { param: "train_freq", default: "1", note: "Steps between updates. Set to 4 if sim is faster than training." },
+        { param: "ent_coef", default: "auto", note: "Leave as auto — SAC's automatic entropy tuning is one of its best features." }
+      ],
+      ax_note: "No Ax yet at this stage — you don't have enough domain knowledge to set search bounds. Learn what each param does first."
+    }
+  },
+  {
+    id: "s3",
+    num: "03",
+    icon: "🦾",
+    iconBg: "rgba(255,179,71,0.15)",
+    title: "Build a Custom Throw Env",
+    desc: "First custom MuJoCo env — 1-DOF arm, ball, fixed hoop",
+    days: "7–10 days",
+    tasks: [
+      { id: "t3_1", text: "Write XML: a single-joint arm (1-DOF), a ball with freejoint, a fixed hoop (cylinder geom as target)" },
+      { id: "t3_2", text: "Subclass gymnasium.Env — define observation_space, action_space, reset(), step()" },
+      { id: "t3_3", text: "Observation: [arm_angle, arm_vel, ball_pos_x, ball_pos_y, ball_vel_x, ball_vel_y, hoop_pos_x, hoop_pos_y]" },
+      { id: "t3_4", text: "Action: [torque] — single continuous value in [-1, 1], mapped to actual torque range" },
+      { id: "t3_5", text: "Reward: -dist(ball, hoop) when ball crosses a height threshold (release detection)" },
+      { id: "t3_6", text: "Train SAC for 500k steps — verify ball reaches hoop region" },
+      { id: "t3_7", text: "Mini-task: get the ball to land within 20cm of hoop center consistently (>60% of episodes)", mini: "🎯 Goal: working throw policy, not trick-shot yet" },
+      { id: "t3_8", text: "Add a release detector: episode ends when ball leaves arm grip — track 'throw' vs 'arm flail'" }
+    ],
+    tips: [
+      { type: "tip-cyan", label: "XML Structure", text: "Start with the simplest possible model. One body, one joint, one freejoint ball. Resist the urge to model the full arm immediately. Complexity can always be added; debugging a broken complex model is painful.", code: `<worldbody>\n  <body name=\"arm\" pos=\"0 0 0.5\">\n    <joint name=\"shoulder\" type=\"hinge\" axis=\"0 1 0\"/>\n    <geom type=\"capsule\" size=\"0.05 0.3\"/>\n    <body name=\"ball_attach\" pos=\"0 0 -0.3\">\n      <!-- ball spawned via freejoint at release -->\n    </body>\n  </body>\n  <body name=\"hoop\" pos=\"2 0 1\">\n    <geom type=\"cylinder\" size=\"0.23 0.02\"/>\n  </body>\n</worldbody>` },
+      { type: "tip-amber", label: "Reward Shaping Warning", text: "Dense rewards (constant -dist) can cause the agent to hover near the hoop without throwing. Add a small bonus for release velocity magnitude to encourage actual throwing." },
+      { type: "tip-green", label: "Episode Length", text: "Keep episodes short: ~200 steps. Long episodes with a ball flying through air waste sim time. Terminate early if ball goes out of bounds." },
+      { type: "tip-cyan", label: "Debug Gym Env", text: "Before training, always validate your env:", code: "from stable_baselines3.common.env_checker import check_env\ncheck_env(env, warn=True)" }
+    ],
+    hp: {
+      algo: "SAC",
+      baseline_env: "Custom ThrowEnv",
+      params: [
+        { param: "learning_starts", default: "10_000", note: "Collect random data before training. Critical for SAC — too low = training on noise." },
+        { param: "gradient_steps", default: "1", note: "If using train_freq=4, set this to 4 too (matched). More updates per step = faster learning but unstable." },
+        { param: "policy_kwargs", default: "dict(net_arch=[256,256])", note: "Increase to [512,512] if policy is underfitting. Check with eval reward plateauing early." },
+        { param: "gamma", default: "0.995", note: "Throw outcome is delayed — increase gamma so distant rewards matter." }
+      ],
+      ax_note: "This is where Ax starts being useful. Your two most impactful params are learning_rate and gamma. Set up a simple Ax loop over these two before scaling up.",
+      ax_code: `from ax.service.ax_client import AxClient\n\nax = AxClient()\nax.create_experiment(\n  name=\"throw_env_tuning\",\n  parameters=[\n    {\"name\": \"lr\", \"type\": \"range\", \"bounds\": [1e-5, 1e-3], \"log_scale\": True},\n    {\"name\": \"gamma\", \"type\": \"range\", \"bounds\": [0.98, 0.999]},\n    {\"name\": \"batch_size\", \"type\": \"choice\", \"values\": [128, 256, 512]},\n  ],\n  objective_name=\"mean_reward\",\n  minimize=False,\n)\n\nfor i in range(20):  # 20 Bayesian trials\n  params, trial_idx = ax.get_next_trial()\n  reward = train_and_eval(**params)  # your eval function\n  ax.complete_trial(trial_idx, {\"mean_reward\": reward})\n\nbest = ax.get_best_parameters()\nprint(\"Best params:\", best)`
+    }
+  },
+  {
+    id: "s4",
+    num: "04",
+    icon: "🔄",
+    iconBg: "rgba(0,212,255,0.15)",
+    title: "Add the Tilting Surface",
+    desc: "The trick-shot mechanic — dynamic deflection toward hoop",
+    days: "7–10 days",
+    tasks: [
+      { id: "t4_1", text: "Add a tilting plane to XML using a hinge joint — motorized, observable angle" },
+      { id: "t4_2", text: "Phase A: Fixed tilt angle (sampled at episode start) — agent observes it, learns to compensate" },
+      { id: "t4_3", text: "Phase A success criteria: consistent deflection within 30cm of hoop at 60% episodes" },
+      { id: "t4_4", text: "Phase B: Dynamic tilt (sinusoidal oscillation) — agent must time the throw" },
+      { id: "t4_5", text: "Add surface_angle and surface_angular_vel to observation space" },
+      { id: "t4_6", text: "Reward: shape it — reward ball post-deflection trajectory toward hoop, not just final landing" },
+      { id: "t4_7", text: "Mini-task: ball deflects off surface and lands in 30cm radius of hoop in >50% of episodes", mini: "🎯 Goal: working trick-shot in sim" },
+      { id: "t4_8", text: "Visualize ball trajectories — plot 20 episode paths to see if policy found consistent trick-shot angle" }
+    ],
+    tips: [
+      { type: "tip-red", label: "Hard Part", text: "The timing problem (Phase B) is genuinely hard. The agent must learn to predict where the surface will be when the ball arrives — this is implicit model-based reasoning. Don't rush Phase A. Spend extra time there." },
+      { type: "tip-cyan", label: "Reward Shaping — Key Trick", text: "For deflection tasks, use intermediate rewards:", code: "# Don't just reward final landing:\nreward = 0\n# Reward 1: ball moving toward surface after throw\nif ball_released and ball_vel_toward_surface > 0:\n  reward += 0.1\n# Reward 2: ball moving toward hoop after deflection\nif ball_deflected and ball_vel_toward_hoop > 0:\n  reward += 0.3 * vel_alignment\n# Reward 3: ball lands near hoop\nif ball_landed:\n  reward += max(0, 1 - dist_to_hoop / 0.5)" },
+      { type: "tip-amber", label: "Curriculum Learning", text: "Train Phase A with 5 fixed tilt angles first, then randomize. Don't start with full random — the agent needs to discover the deflection relationship first." },
+      { type: "tip-green", label: "Contact Dynamics", text: "Bouncing/contact physics in MuJoCo is sensitive. Tune geom friction and elasticity in the XML if the ball behaves unrealistically:", code: `<geom name=\"surface\" type=\"plane\"\n  friction=\"0.8 0.005 0.0001\"\n  solimp=\"0.9 0.95 0.001\"\n  solref=\"0.02 1\"/>` }
+    ],
+    hp: {
+      algo: "SAC + Curriculum",
+      baseline_env: "TrickShotEnv Phase A/B",
+      params: [
+        { param: "n_envs (VecEnv)", default: "4", note: "Run 4 parallel envs — major speedup on your CPU. Use SubprocVecEnv, not DummyVecEnv." },
+        { param: "buffer_size", default: "500_000", note: "Reduce from 1M since you now have 4 envs filling it faster." },
+        { param: "learning_rate", default: "1e-4", note: "Drop from Stage 3 — contact dynamics make training noisier, need smaller steps." },
+        { param: "gradient_steps", default: "4", note: "With n_envs=4, set gradient_steps=4 to match data collection rate." },
+        { param: "target_update_interval", default: "1", note: "How often to update target network. Try 2 if training is unstable." }
+      ],
+      ax_note: "By Stage 4 you should run a full Ax sweep. Key insight: n_envs is discrete, so use 'choice' type. Include reward shaping weights as params too.",
+      ax_code: `# Tune reward weights — critical for trick-shot\nparameters=[\n  {\"name\": \"lr\", \"type\": \"range\", \"bounds\": [5e-5, 5e-4], \"log_scale\": True},\n  {\"name\": \"w_trajectory\", \"type\": \"range\", \"bounds\": [0.05, 0.5]},\n  {\"name\": \"w_landing\", \"type\": \"range\", \"bounds\": [0.5, 2.0]},\n  {\"name\": \"gamma\", \"type\": \"range\", \"bounds\": [0.99, 0.999]},\n  {\"name\": \"n_envs\", \"type\": \"choice\", \"values\": [2, 4, 8]},\n]`
+    }
+  },
+  {
+    id: "s5",
+    num: "05",
+    icon: "🤖",
+    iconBg: "rgba(255,179,71,0.15)",
+    title: "Full Robot Arm + Polish",
+    desc: "Replace toy arm with Franka/UR5, add HER, evaluate robustness",
+    days: "Ongoing",
+    tasks: [
+      { id: "t5_1", text: "Download Franka Panda MJCF model from GitHub (deepmind/mujoco_menagerie)" },
+      { id: "t5_2", text: "Swap the 1-DOF arm XML for Franka — extend observation space to full joint state" },
+      { id: "t5_3", text: "Reformulate action space: 7-DOF joint torques or end-effector delta position (easier)" },
+      { id: "t5_4", text: "Enable HER (Hindsight Experience Replay) in SB3 — helps with sparse landing rewards" },
+      { id: "t5_5", text: "Run 2M step training with 4 parallel envs — use tmux or nohup for overnight runs" },
+      { id: "t5_6", text: "Evaluate: 100 episodes with randomized hoop position, random initial surface tilt" },
+      { id: "t5_7", text: "Optional: Add camera obs (64x64 pixels) — visual policy, test on GPU now", mini: "⚠️ Only if state-based policy already converges" }
+    ],
+    tips: [
+      { type: "tip-cyan", label: "MuJoCo Menagerie", text: "Use the official deepmind/mujoco_menagerie repo — pre-tuned MJCF models for Franka, UR5, Allegro hand etc. Don't model a robot arm from scratch.", code: "git clone https://github.com/google-deepmind/mujoco_menagerie" },
+      { type: "tip-green", label: "HER Setup", text: "HER needs a GoalEnv interface — slightly different from standard Env:", code: "class TrickShotGoalEnv(gym.GoalEnv):\n  def __init__(self):\n    self.observation_space = spaces.Dict({\n      'observation': spaces.Box(...),\n      'achieved_goal': spaces.Box(...),\n      'desired_goal': spaces.Box(...)\n    })" },
+      { type: "tip-amber", label: "End-Effector Control", text: "Joint torque control on a 7-DOF arm is hard to train. Use Operational Space Control or delta-EE position as your action space — much faster convergence for a throw task." },
+      { type: "tip-cyan", label: "Overnight Runs", text: "Use WandB instead of TensorBoard for long runs — you can check training from your phone:", code: "pip install wandb\n# In your training script:\nimport wandb\nwandb.init(project='trick-shot-robot')\n# SB3 WandB callback handles the rest" }
+    ],
+    hp: {
+      algo: "SAC + HER",
+      baseline_env: "TrickShotGoalEnv (Franka)",
+      params: [
+        { param: "her_n_sampled_goal", default: "4", note: "HER goals per real transition. 4 is the standard from the original paper — increase to 8 if rewards stay sparse." },
+        { param: "her_goal_selection_strategy", default: "future", note: "Use 'future' — samples goals from later in same episode. Best for manipulation/throw tasks." },
+        { param: "learning_rate", default: "1e-4", note: "7-DOF arm + HER = complex landscape. Keep LR low." },
+        { param: "n_envs", default: "4–8", note: "HER with vectorized envs is powerful. 8 envs overnight on your CPU is feasible." }
+      ],
+      ax_note: "At Stage 5 you have a real task. Run Ax with 40+ trials overnight. Add HER-specific params to your search space.",
+      ax_code: `parameters=[\n  {\"name\": \"lr\", \"type\": \"range\", \"bounds\": [1e-5, 3e-4], \"log_scale\": True},\n  {\"name\": \"her_n_sampled_goal\", \"type\": \"choice\", \"values\": [2, 4, 8]},\n  {\"name\": \"batch_size\", \"type\": \"choice\", \"values\": [256, 512, 1024]},\n  {\"name\": \"gamma\", \"type\": \"range\", \"bounds\": [0.98, 0.9999]},\n  {\"name\": \"tau\", \"type\": \"range\", \"bounds\": [0.001, 0.02]},\n]\n# Run 40 trials, parallelise 4 at a time\nax.create_experiment(..., choose_generation_strategy_kwargs=\n  {\"num_trials\": 40, \"max_parallelism\": 4})`
+    }
+  }
+];
+
+// ── STORAGE ──
+function getChecked() {
+  try { return JSON.parse(localStorage.getItem('rl_roadmap_checked') || '{}'); }
+  catch { return {}; }
+}
+function saveChecked(checked) {
+  localStorage.setItem('rl_roadmap_checked', JSON.stringify(checked));
+}
+
+// ── PROGRESS ──
+function calcProgress(checked) {
+  const total = STAGES.reduce((s, st) => s + st.tasks.length, 0);
+  const done = Object.values(checked).filter(Boolean).length;
+  return { total, done, pct: total ? Math.round((done / total) * 100) : 0 };
+}
+
+function updateGlobalBar(checked) {
+  const { pct } = calcProgress(checked);
+  document.getElementById('globalBar').style.width = pct + '%';
+  document.getElementById('globalPct').textContent = pct + '%';
+}
+
+function getStagePct(stage, checked) {
+  const total = stage.tasks.length;
+  const done = stage.tasks.filter(t => checked[t.id]).length;
+  return total ? Math.round((done / total) * 100) : 0;
+}
+
+// ── RING SVG ──
+function makeRing(pct, color = '#00D4FF') {
+  const r = 12, cx = 16, cy = 16, circ = 2 * Math.PI * r;
+  const dash = (pct / 100) * circ;
+  return `<svg viewBox="0 0 32 32" width="32" height="32">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#1E3050" stroke-width="2.5"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="2.5"
+      stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ / 4}"
+      stroke-linecap="round"/>
+    <text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="7" fill="${color}"
+      font-family="JetBrains Mono,monospace">${pct}%</text>
+  </svg>`;
+}
+
+// ── RENDER ──
+function renderStages() {
+  const checked = getChecked();
+  const container = document.getElementById('stagesContainer');
+  container.innerHTML = '';
+
+  STAGES.forEach((stage, idx) => {
+    const pct = getStagePct(stage, checked);
+    const isComplete = pct === 100;
+    const isActive = !isComplete && (idx === 0 || getStagePct(STAGES[idx-1], checked) === 100);
+
+    const el = document.createElement('div');
+    el.className = 'stage' + (isComplete ? ' complete' : isActive ? ' active' : ' locked');
+    el.dataset.id = stage.id;
+
+    // Tasks HTML
+    const tasksHTML = stage.tasks.map(t => `
+      <div class="task-item ${checked[t.id] ? 'done' : ''}" data-task="${t.id}">
+        <div class="task-check">${checked[t.id] ? '✓' : ''}</div>
+        <div>
+          <span class="task-text">${t.text}</span>
+          ${t.mini ? `<span class="task-mini">↳ ${t.mini}</span>` : ''}
+        </div>
+      </div>
+    `).join('');
+
+    // Tips HTML
+    const tipsHTML = stage.tips.map(t => `
+      <div class="tip-card ${t.type}">
+        <div class="tip-label">${t.label}</div>
+        <div class="tip-text">${t.text}</div>
+        ${t.code ? `<code class="tip-code">${escapeHTML(t.code)}</code>` : ''}
+      </div>
+    `).join('');
+
+    // HP HTML
+    let hpHTML = '<p style="color:var(--text-dim);font-size:13px;">No specific hyperparameter tuning at this stage — focus on fundamentals first.</p>';
+    if (stage.hp) {
+      const rowsHTML = stage.hp.params.map(p => `
+        <tr>
+          <td><span class="hp-param">${p.param}</span></td>
+          <td><span class="hp-default">${p.default}</span></td>
+          <td><span class="hp-note">${p.note}</span></td>
+        </tr>
+      `).join('');
+
+      const axHTML = stage.hp.ax_code ? `
+        <div class="ax-block">
+          <div class="ax-title">🔬 Meta Ax — Bayesian Hyperparameter Search</div>
+          <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:10px">${stage.hp.ax_note}</p>
+          <code class="tip-code">${escapeHTML(stage.hp.ax_code)}</code>
+        </div>
+      ` : `<div class="ax-block"><div class="ax-title">Ax Note</div><p style="font-size:12.5px;color:var(--text-dim)">${stage.hp.ax_note}</p></div>`;
+
+      hpHTML = `
+        <div class="hp-section">
+          <div class="hp-title">Algorithm: ${stage.hp.algo} &nbsp;|&nbsp; Env: ${stage.hp.baseline_env}</div>
+          <table class="hp-table">
+            <thead><tr><th>Parameter</th><th>Default</th><th>When to change</th></tr></thead>
+            <tbody>${rowsHTML}</tbody>
+          </table>
+        </div>
+        ${axHTML}
+        <div style="margin-top:12px;">
+          <div class="install-box">
+            <div class="install-label">Install Ax</div>
+            <code class="tip-code">pip install ax-platform</code>
+          </div>
+        </div>
+      `;
+    }
+
+    el.innerHTML = `
+      <div class="stage-header">
+        <span class="stage-num">${stage.num}</span>
+        <div class="stage-icon" style="background:${stage.iconBg}">${stage.icon}</div>
+        <div class="stage-meta">
+          <div class="stage-title">${stage.title}</div>
+          <div class="stage-desc">${stage.desc}</div>
+        </div>
+        <div class="stage-status">
+          <span class="stage-pill pill-days">${stage.days}</span>
+          <div class="stage-progress-ring">${makeRing(pct, isComplete ? '#39FF9B' : '#00D4FF')}</div>
+        </div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="stage-body">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tasks">Tasks</button>
+          <button class="tab-btn" data-tab="tips">Tips & Tricks</button>
+          <button class="tab-btn" data-tab="hp">Hyperparams</button>
+        </div>
+        <div class="tab-panel active" data-panel="tasks">
+          <div class="task-list">${tasksHTML}</div>
+        </div>
+        <div class="tab-panel" data-panel="tips">
+          <div class="tips-list">${tipsHTML}</div>
+        </div>
+        <div class="tab-panel" data-panel="hp">
+          ${hpHTML}
+        </div>
+      </div>
+    `;
+
+    container.appendChild(el);
+  });
+
+  updateGlobalBar(checked);
+  attachEvents();
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function attachEvents() {
+  // Toggle open/close
+  document.querySelectorAll('.stage-header').forEach(h => {
+    h.addEventListener('click', (e) => {
+      if (e.target.closest('.task-item')) return;
+      const stage = h.closest('.stage');
+      stage.classList.toggle('open');
+    });
+  });
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const body = btn.closest('.stage-body');
+      body.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      body.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      body.querySelector(`[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+    });
+  });
+
+  // Task checkboxes
+  document.querySelectorAll('.task-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = item.dataset.task;
+      const checked = getChecked();
+      checked[id] = !checked[id];
+      saveChecked(checked);
+      renderStages();
+      // Re-open same stage
+      const stage = document.querySelector(`[data-id="${item.closest('.stage').dataset.id}"]`);
+      if (stage) {
+        stage.classList.add('open');
+        // Re-activate same tab
+        const activeTab = stage.querySelector('.tab-btn.active');
+        // already restored by renderStages default — just click tasks
+      }
+    });
+  });
+
+  // Auto-open first active stage
+  const firstActive = document.querySelector('.stage.active');
+  if (firstActive && !firstActive.classList.contains('open')) {
+    firstActive.classList.add('open');
+  }
+}
+
+renderStages();
+</script>
+</body>
+</html>
