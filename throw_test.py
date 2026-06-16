@@ -1,8 +1,8 @@
 import mujoco
-import mujoco.viewer
+import mujoco.viewer  # Back to native viewer
 import time
-import numpy as np
-
+import numpy as np  
+    
 model = mujoco.MjModel.from_xml_path(
     r"E:\personal projects\FAFO-RL\agnet_xml\three_pointer.xml"
 )
@@ -19,6 +19,7 @@ phase  = WINDUP
 data.eq_active[grip_id] = True
 mujoco.mj_forward(model, data)
 
+# The native viewer uses a context manager (with statement)
 with mujoco.viewer.launch_passive(model, data) as viewer:
     step_count = 0
     while viewer.is_running():
@@ -30,11 +31,10 @@ with mujoco.viewer.launch_passive(model, data) as viewer:
             shoulder_vel = abs(data.qvel[0])
             step_count += 1
 
-            # debug every 50 steps
             if step_count % 50 == 0:
                 print(f"Step {step_count} | shoulder_vel={shoulder_vel:.3f} rad/s")
 
-            if shoulder_vel > 3.0:   # lowered from 8.0
+            if shoulder_vel > 300.0:
                 data.eq_active[grip_id] = False
                 phase = FLIGHT
                 print(f"Released! vel={shoulder_vel:.2f} rad/s at step {step_count}")
@@ -51,9 +51,11 @@ with mujoco.viewer.launch_passive(model, data) as viewer:
                 phase = LANDED
 
         elif phase == LANDED:
-            pass
+            mujoco.mj_step(model, data)
 
+        # Native viewer uses sync()
         viewer.sync()
+        
         time_elapsed = time.time() - step_start
         if time_elapsed < model.opt.timestep:
             time.sleep(model.opt.timestep - time_elapsed)
