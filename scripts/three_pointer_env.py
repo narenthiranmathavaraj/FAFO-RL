@@ -1,6 +1,8 @@
+from pandas.io.formats import printing
 __credits__ = ["Pixel_Dude"]
 
 import numpy as np
+from pathlib import Path
 
 from gymnasium import utils
 from gymnasium.envs.mujoco import MujocoEnv
@@ -8,11 +10,17 @@ from gymnasium.spaces import Box
 
 import mujoco
 
-DEFAULT_CAMERA_CONFIG = {"trackbodyid": 0}
+
+DEFAULT_CAMERA_CONFIG = {
+    "trackbodyid": 0,
+    "distance": 10.04,
+}
+
 
 
 class ThreePointerEnv(MujocoEnv, utils.EzPickle):
-
+    current_dir = Path.cwd()
+    xml_path_str = str(current_dir.parent / "agnet_xml" / "three_pointer.xml")
     metadata = {
         "render_modes": [
             "human",
@@ -24,7 +32,7 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
 
     def __init__(
         self,
-        xml_file: str = r"E:\personal projects\FAFO-RL\agnet_xml\three_pointer.xml",
+        xml_file: str = xml_path_str,
         frame_skip: int = 2,
         default_camera_config: dict[str, float | int] = DEFAULT_CAMERA_CONFIG,
         reward_dist_weight: float = 1,
@@ -75,8 +83,10 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
         low = np.append(self.action_space.low, -1.0).astype(np.float32)
         high = np.append(self.action_space.high, 1.0).astype(np.float32)
         self.action_space = Box(low=low, high=high, dtype=np.float32)
-
+        
     def step(self, action):
+        self.termination = False
+
         action = np.asarray(action, dtype=np.float64)
         motor_ctrl, release_signal = action[:1], action[1]
 
@@ -88,23 +98,31 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
             
 
         self.do_simulation(motor_ctrl, self.frame_skip)
-
+        if self.data.eq_active[self.grip_id] == False and self.data.qpos[3] <0.15 and (self.data.qpos[1] <2.8 or self.data.qpos[1]>4):
+            self.termination  = True
         observation = self._get_obs()
         reward, reward_info = self._get_rew(motor_ctrl)
         info = reward_info
 
         if self.render_mode == "human":
             self.render()
+
         # truncation=False as the time limit is handled by the `TimeLimit` wrapper added during `make`
-        return observation, reward, False, False, info
+        return observation, reward, self.termination , False, info
 
     def _get_rew(self, action):
         vec = self.get_body_com("basketball") - self.data.site_xpos[self.hoop_site_id]
         reward_dist = -np.linalg.norm(vec) * self._reward_dist_weight
         reward_ctrl = -np.square(action).sum() * self._reward_control_weight
-
-        reward = reward_dist + reward_ctrl
-
+ 
+        reward = reward_dist + reward_ctrl 
+        # print(f'Terminated {self.termination}')
+        if self.termination == True:
+            reward_termination = -10000
+            reward += reward_termination 
+        if np.linalg.norm(vec) < 0.2:
+            reward_success = +5000
+            reward += reward_success
         reward_info = {
             "reward_dist": reward_dist,
             "reward_ctrl": reward_ctrl,
