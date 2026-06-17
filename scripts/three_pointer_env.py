@@ -95,6 +95,9 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
         # shouldn't get yanked back to the gripper mid-flight).
         if release_signal > 0.0 and self.data.eq_active[self.grip_id]:
             self.data.eq_active[self.grip_id] = False
+            reward_throw = +900
+            self.reward += reward_throw
+
             
 
         self.do_simulation(motor_ctrl, self.frame_skip)
@@ -114,21 +117,26 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
         vec = self.get_body_com("basketball") - self.data.site_xpos[self.hoop_site_id]
         reward_dist = -np.linalg.norm(vec) * self._reward_dist_weight
         reward_ctrl = -np.square(action).sum() * self._reward_control_weight
- 
-        reward = reward_dist + reward_ctrl 
+        
+        self.reward = reward_dist + reward_ctrl 
+
+        # if self.data.eq_active[self.grip_id] == True:
+        #     reward_vel = +abs(self.data.qvel[0])*2
+        #     reward += reward_vel 
         # print(f'Terminated {self.termination}')
+
         if self.termination == True:
-            reward_termination = -10000
-            reward += reward_termination 
+            reward_termination = -1000
+            self.reward += reward_termination 
         if np.linalg.norm(vec) < 0.2:
-            reward_success = +5000
-            reward += reward_success
+            reward_success = +10000
+            self.reward += reward_success
         reward_info = {
             "reward_dist": reward_dist,
             "reward_ctrl": reward_ctrl,
         }
 
-        return reward, reward_info
+        return self.reward, reward_info
 
     def reset_model(self):
         self.data.qpos[1:4] = [-5.15, 0, 1.3] 

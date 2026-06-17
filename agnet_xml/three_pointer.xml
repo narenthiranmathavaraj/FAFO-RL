@@ -32,7 +32,7 @@
             </body>     
 
             <!-- Basketball Hoop (FIXED — removed sliding joints) -->
-            <body name="basketball_hoop" pos="0 0 0">
+            <body name="basketball_hoop" pos="-3 0 0">
                   <!-- Rim: R=0.3, N=16, tube=0.02 -->
                   <geom type="cylinder" size="0.02 0.05890" pos="6.4000 0.0000 3" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 0.4 0.0 1"/>
                   <geom type="cylinder" size="0.02 0.05890" pos="6.3772 0.1148 3" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 0.4 0.0 1"/>
