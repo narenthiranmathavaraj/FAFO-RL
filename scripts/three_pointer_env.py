@@ -85,24 +85,21 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
         self.action_space = Box(low=low, high=high, dtype=np.float32)
         
     def step(self, action):
+        self.reward = 0.0          # initialize here, not in _get_rew
         self.termination = False
 
         action = np.asarray(action, dtype=np.float64)
-        motor_ctrl, release_signal = action[:1], action[1]
+        motor_ctrl = action[:1]
+        release_signal = action[1]
 
-        # One-way release: a positive signal drops the weld; once it's
-        # dropped it stays dropped for the rest of the episode (the ball
-        # shouldn't get yanked back to the gripper mid-flight).
         if release_signal > 0.0 and self.data.eq_active[self.grip_id]:
             self.data.eq_active[self.grip_id] = False
-            reward_throw = +900
-            self.reward += reward_throw
-
-            
+            self.reward += 50.0     # small release bonus
 
         self.do_simulation(motor_ctrl, self.frame_skip)
-        if self.data.eq_active[self.grip_id] == False and self.data.qpos[3] <0.15 and (self.data.qpos[1] <2.8 or self.data.qpos[1]>4):
-            self.termination  = True
+        if self.data.eq_active[self.grip_id] == False and self.data.qpos[3] <0.15: 
+            if(self.data.qpos[1] <2.8 or self.data.qpos[1]>4):
+                self.termination  = True
         observation = self._get_obs()
         reward, reward_info = self._get_rew(motor_ctrl)
         info = reward_info
@@ -114,29 +111,43 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
         return observation, reward, self.termination , False, info
 
     def _get_rew(self, action):
-        vec = self.get_body_com("basketball") - self.data.site_xpos[self.hoop_site_id]
-        reward_dist = -np.linalg.norm(vec) * self._reward_dist_weight
-        reward_ctrl = -np.square(action).sum() * self._reward_control_weight
-        
-        self.reward = reward_dist + reward_ctrl 
+        ball_released = not bool(self.data.eq_active[self.grip_id])
 
-        # if self.data.eq_active[self.grip_id] == True:
-        #     reward_vel = +abs(self.data.qvel[0])*2
-        #     reward += reward_vel 
-        # print(f'Terminated {self.termination}')
+        # dist reward only after release
+        if ball_released:
+            reward_no_release = 0
+            vec = (self.get_body_com("basketball")
+                - self.data.site_xpos[self.hoop_site_id])
+            reward_dist = -np.linalg.norm(vec) * self._reward_dist_weight
 
-        if self.termination == True:
-            reward_termination = -1000
-            self.reward += reward_termination 
-        if np.linalg.norm(vec) < 0.2:
-            reward_success = +10000
-            self.reward += reward_success
-        reward_info = {
-            "reward_dist": reward_dist,
-            "reward_ctrl": reward_ctrl,
+            # reward horizontal velocity toward hoop
+            ball_vx = self.data.qvel[1]
+            reward_flight = 0.3 * max(ball_vx, 0)   # only reward moving toward hoop
+
+            # success
+            if np.linalg.norm(vec) < 0.25:
+                self.reward += 500.0
+
+            # bad landing
+            if self.termination:
+                self.reward += -50.0
+        else:
+            reward_no_release = -10
+            vec = (self.get_body_com("basketball")
+                - self.data.site_xpos[self.hoop_site_id])
+            reward_dist = -np.linalg.norm(vec) * self._reward_dist_weight
+            reward_flight = 0.0
+
+        # control cost always
+        reward_ctrl = -np.square(action).sum() * 0.01  # reduced weight
+
+        self.reward += reward_dist + reward_flight + reward_ctrl + reward_no_release
+
+        return self.reward, {
+            "reward_dist":   reward_dist,
+            "reward_ctrl":   reward_ctrl,
+            "ball_released": ball_released,
         }
-
-        return self.reward, reward_info
 
     def reset_model(self):
         self.data.qpos[1:4] = [-5.15, 0, 1.3] 
