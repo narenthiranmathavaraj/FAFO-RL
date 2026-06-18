@@ -130,7 +130,7 @@ class ThreePointerEnv(MujocoEnv, utils.EzPickle):
 
             # bad landing
             if self.termination:
-                self.reward += -50.0
+                self.reward += -100.0
         else:
             reward_no_release = -10
             vec = (self.get_body_com("basketball")

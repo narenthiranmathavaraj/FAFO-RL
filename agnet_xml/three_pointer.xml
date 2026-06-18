@@ -50,6 +50,130 @@
                   <geom type="cylinder" size="0.02 0.05890" pos="6.2148 -0.2772 3" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 0.4 0.0 1"/>
                   <geom type="cylinder" size="0.02 0.05890" pos="6.3121 -0.2121 3" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 0.4 0.0 1"/>
                   <geom type="cylinder" size="0.02 0.05890" pos="6.3772 -0.1148 3" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 0.4 0.0 1"/>
+
+                  <!-- Rim: R=0.27, N=16, tube=0.02 -->
+<geom type="cylinder" size="0.02 0.05301" pos="6.3700 0.0000 2.98" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.3494 0.1033 2.98" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2909 0.1909 2.98" axisangle="-0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2033 0.2494 2.98" axisangle="-0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.1000 0.2700 2.98" axisangle="-0.0000 -1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9967 0.2494 2.98" axisangle="0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9091 0.1909 2.98" axisangle="0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.8506 0.1033 2.98" axisangle="0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.8300 0.0000 2.98" axisangle="1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.8506 -0.1033 2.98" axisangle="0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9091 -0.1909 2.98" axisangle="0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9967 -0.2494 2.98" axisangle="0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.1000 -0.2700 2.98" axisangle="0.0000 1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2033 -0.2494 2.98" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2909 -0.1909 2.98" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.3494 -0.1033 2.98" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<!-- Rim: R=0.27, N=16, tube=0.02 -->
+<geom type="cylinder" size="0.02 0.05301" pos="6.3700 0.0000 2.95" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.3494 0.1033 2.95" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2909 0.1909 2.95" axisangle="-0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2033 0.2494 2.95" axisangle="-0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.1000 0.2700 2.95" axisangle="-0.0000 -1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9967 0.2494 2.95" axisangle="0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9091 0.1909 2.95" axisangle="0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.8506 0.1033 2.95" axisangle="0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.8300 0.0000 2.95" axisangle="1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.8506 -0.1033 2.95" axisangle="0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9091 -0.1909 2.95" axisangle="0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="5.9967 -0.2494 2.95" axisangle="0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.1000 -0.2700 2.95" axisangle="0.0000 1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2033 -0.2494 2.95" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.2909 -0.1909 2.95" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05301" pos="6.3494 -0.1033 2.95" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<!-- Rim: R=0.26, N=16, tube=0.02 -->
+<geom type="cylinder" size="0.02 0.05105" pos="6.3600 0.0000 2.92" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.3402 0.0995 2.92" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.2838 0.1838 2.92" axisangle="-0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.1995 0.2402 2.92" axisangle="-0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.1000 0.2600 2.92" axisangle="-0.0000 -1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.0005 0.2402 2.92" axisangle="0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="5.9162 0.1838 2.92" axisangle="0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="5.8598 0.0995 2.92" axisangle="0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="5.8400 0.0000 2.92" axisangle="1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="5.8598 -0.0995 2.92" axisangle="0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="5.9162 -0.1838 2.92" axisangle="0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.0005 -0.2402 2.92" axisangle="0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.1000 -0.2600 2.92" axisangle="0.0000 1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.1995 -0.2402 2.92" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.2838 -0.1838 2.92" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.05105" pos="6.3402 -0.0995 2.92" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<!-- Rim: R=0.25, N=16, tube=0.02 -->
+<geom type="cylinder" size="0.02 0.04909" pos="6.3500 0.0000 2.88" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.3310 0.0957 2.88" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.2768 0.1768 2.88" axisangle="-0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.1957 0.2310 2.88" axisangle="-0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.1000 0.2500 2.88" axisangle="-0.0000 -1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.0043 0.2310 2.88" axisangle="0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="5.9232 0.1768 2.88" axisangle="0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="5.8690 0.0957 2.88" axisangle="0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="5.8500 0.0000 2.88" axisangle="1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="5.8690 -0.0957 2.88" axisangle="0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="5.9232 -0.1768 2.88" axisangle="0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.0043 -0.2310 2.88" axisangle="0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.1000 -0.2500 2.88" axisangle="0.0000 1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.1957 -0.2310 2.88" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.2768 -0.1768 2.88" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04909" pos="6.3310 -0.0957 2.88" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+
+<!-- Rim: R=0.22, N=16, tube=0.02 -->
+<geom type="cylinder" size="0.02 0.04320" pos="6.3200 0.0000 2.84" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.3033 0.0842 2.84" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.2556 0.1556 2.84" axisangle="-0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.1842 0.2033 2.84" axisangle="-0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.1000 0.2200 2.84" axisangle="-0.0000 -1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.0158 0.2033 2.84" axisangle="0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="5.9444 0.1556 2.84" axisangle="0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="5.8967 0.0842 2.84" axisangle="0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="5.8800 0.0000 2.84" axisangle="1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="5.8967 -0.0842 2.84" axisangle="0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="5.9444 -0.1556 2.84" axisangle="0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.0158 -0.2033 2.84" axisangle="0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.1000 -0.2200 2.84" axisangle="0.0000 1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.1842 -0.2033 2.84" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.2556 -0.1556 2.84" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+<geom type="cylinder" size="0.02 0.04320" pos="6.3033 -0.0842 2.84" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+
+                  <!-- Rim: R=0.21, N=16, tube=0.02 -->
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.3100 0.0000 2.82" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2940 0.0804 2.82" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2485 0.1485 2.82" axisangle="-0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1804 0.1940 2.82" axisangle="-0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1000 0.2100 2.82" axisangle="-0.0000 -1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.0196 0.1940 2.82" axisangle="0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9515 0.1485 2.82" axisangle="0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9060 0.0804 2.82" axisangle="0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.8900 0.0000 2.82" axisangle="1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9060 -0.0804 2.82" axisangle="0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9515 -0.1485 2.82" axisangle="0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.0196 -0.1940 2.82" axisangle="0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1000 -0.2100 2.82" axisangle="0.0000 1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1804 -0.1940 2.82" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2485 -0.1485 2.82" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2940 -0.0804 2.82" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+
+
+                  <!-- Rim: R=0.21, N=16, tube=0.02 -->
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.3100 0.0000 2.79" axisangle="-1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2940 0.0804 2.79" axisangle="-0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2485 0.1485 2.79" axisangle="-0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1804 0.1940 2.79" axisangle="-0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1000 0.2100 2.79" axisangle="-0.0000 -1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.0196 0.1940 2.79" axisangle="0.3827 -0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9515 0.1485 2.79" axisangle="0.7071 -0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9060 0.0804 2.79" axisangle="0.9239 -0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.8900 0.0000 2.79" axisangle="1.0000 -0.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9060 -0.0804 2.79" axisangle="0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="5.9515 -0.1485 2.79" axisangle="0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.0196 -0.1940 2.79" axisangle="0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1000 -0.2100 2.79" axisangle="0.0000 1.0000 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.1804 -0.1940 2.79" axisangle="-0.3827 0.9239 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2485 -0.1485 2.79" axisangle="-0.7071 0.7071 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
+                  <geom type="cylinder" size="0.02 0.04123" pos="6.2940 -0.0804 2.79" axisangle="-0.9239 0.3827 0 1.5708" conaffinity="1" contype="0" rgba="1.0 1.0 1.0 0.7"/>
                   <!-- Pole -->
                   <geom type="cylinder" size="0.05 1.6" pos="6.5 0 1.6"
                         conaffinity="1" contype="1" rgba="0.7 0.7 0.7 1" />
