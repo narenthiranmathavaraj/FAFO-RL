@@ -2,5 +2,5 @@ rll_venv/
 fafo_rl_env/
 
 scripts/__pycache__/
-naren_lab_roadmap.html/
-sb3_readme.md/
+naren_lab_roadmap.html
+sb3_readme.md

@@ -81,6 +81,7 @@ FAFO-RL/
 │                              # stage-by-stage tasks, tips, hyperparameter guide
 │                              # open in browse
 ├── three_pointer_log/         # TensorBoard logs
+├── mujoco_xml_readme.md       # To learn about mujoco parameters in xml
 └── README.md
 ```
 
