@@ -367,7 +367,7 @@ time/fps             → if drops suddenly, check memory
 
 ---
 
-## Hyperparameter Tuning with Ax
+## Hyperparameter Tuning with A
 
 ```python
 from ax.service.ax_client import AxClient, ObjectiveProperties
