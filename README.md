@@ -1,6 +1,6 @@
-# 🏀 Trick Shot Basketball Robot — RL from Scratch
+# 🏀 Trick Shot Basketball Robot RL from Scratch
 
-> Teaching a robot arm to make a basketball trick shot using Reinforcement Learning — built as a learning journey from zero to a working sim.
+> Teaching a robot arm to make a basketball trick shot using Reinforcement Learning built as a learning journey from zero to a working sim.
 
 ---
 <!-- Add your demo GIF here -->
@@ -12,7 +12,7 @@
 
 ## The Goal
 
-The end goal of this project is to train a robotic arm in simulation to perform a **basketball trick shot** — throw a ball onto a **tilting surface** that deflects it into a hoop. The agent must learn not just *how* to throw, but *when* to throw, accounting for the moving surface and the delayed outcome of the shot.
+The end goal of this project is to train a robotic arm in simulation to perform a **basketball trick shot** throw a ball onto a **tilting surface** that deflects it into a hoop. The agent must learn not just *how* to throw, but *when* to throw, accounting for the moving surface and the delayed outcome of the shot.
 
 This RL problem contains:
 - Continuous action space (torque control)
@@ -85,7 +85,7 @@ FAFO-RL/
 └── README.md
 ```
 
-> **Code note:** Comments in `scripts/main.ipynb` and `three_pointer_env.py` are minimal and rough — written fast during experimentation. Cleanup and proper docstrings are planned.
+> **Code note:** Comments in `scripts/main.ipynb` and `three_pointer_env.py` are minimal and rough written fast during experimentation. Cleanup and proper docstrings are planned.
 
 ---
 
