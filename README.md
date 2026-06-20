@@ -55,7 +55,7 @@ A single-joint robot arm learns to throw a basketball into a fixed hoop using SA
 
 **Reward shaping is more important than algorithm choice**
 
-**A fixed seed ensures reproducibility — the same seed will produce the same training run. Note that convergence is seed-sensitive: seed=33 converged while seed=3 did not, which is why running multiple seeds matters.**
+**A fixed seed ensures reproducibility — the same seed will produce the same training run. Note that convergence is seed-sensitive:  while seed=3 did not converged but seed=33 did, which is why running multiple seeds matters.**
 
 **Weld constraints for grab/release**
 MuJoCo `<equality><weld>` constraints let you rigidly attach bodies and release them programmatically via `data.eq_active[id] = False`. This simulates a gripper without needing finger joints.
