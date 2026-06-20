@@ -14,7 +14,7 @@
 
 The end goal of this project is to train a robotic arm in simulation to perform a **basketball trick shot** — throw a ball onto a **tilting surface** that deflects it into a hoop. The agent must learn not just *how* to throw, but *when* to throw, accounting for the moving surface and the delayed outcome of the shot.
 
-This is a hard RL problem:
+This RL problem contains:
 - Continuous action space (torque control)
 - Contact-rich physics (ball, surface, rim)
 - Delayed sparse reward (outcome only known at landing)
